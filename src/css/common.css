@@ -24,3 +24,18 @@ button {
   border: 0px;
 }
 /* #endregion */
+
+body {
+  padding: 36px;
+}
+
+.container {
+  margin: 0 auto;
+  min-width: 1128px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
