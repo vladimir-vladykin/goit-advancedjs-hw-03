@@ -12,10 +12,14 @@ export function loadImages(searchQuery) {
   const url = `https://pixabay.com/api/?${searchParams}`;
   console.log('Request url is', url);
 
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    return response.json();
-  });
+  return fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      return response.json();
+    })
+    .then(json => {
+      return json.hits;
+    });
 }
