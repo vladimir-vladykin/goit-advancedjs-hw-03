@@ -16,6 +16,13 @@ ol {
 p {
   margin: 0;
 }
+a {
+  text-decoration: none;
+  color: currentColor;
+
+  transition: var(--medium-trns);
+  transition-property: color;
+}
 img {
   display: block;
   max-width: 100%;

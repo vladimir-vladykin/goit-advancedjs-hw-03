@@ -1,5 +1,9 @@
 import { loadImages } from './pixabay-api.js';
 import { renderImages, clearImages } from './render-functions.js';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const searchButton = document.querySelector('input[name=search]');
 const searchInput = document.querySelector('.search-form button');
@@ -12,30 +16,46 @@ searchForm.addEventListener('submit', event => {
   const searchQuery = event.currentTarget.elements.search.value.trim();
 
   if (searchQuery === '') {
-    // todo error message if empty?
     return;
   }
 
   startLoadingImages(searchQuery);
 });
 
+// setup lib for image details
+const lighboxInstance = new SimpleLightbox('.gallery a', {
+  disableScroll: false,
+  captionsData: 'alt',
+  captionDelay: 250,
+  captionPosition: 'bottom',
+});
+
 function startLoadingImages(searchQuery) {
-  // TODO start loading indicator
   clearImages(galleryList);
 
   loadImages(searchQuery)
     .then(images => {
       if (images.length === 0) {
-        // todo error, and clean up UI
-        console.log('No images found');
+        showErrorMessage(
+          'Sorry, there are no images matching your search query. Please try again!'
+        );
         return;
       }
 
       console.log(images);
       renderImages(galleryList, images);
+      lighboxInstance.refresh();
     })
     .catch(error => {
-      console.log(error);
-      // TODO clean up UI and show error
+      showErrorMessage(error);
     });
+}
+
+function showErrorMessage(message) {
+  iziToast.show({
+    message,
+    messageColor: 'white',
+    position: 'topRight',
+    backgroundColor: '#ef4040',
+  });
 }
