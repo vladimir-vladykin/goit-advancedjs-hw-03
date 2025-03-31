@@ -1,5 +1,5 @@
 import { loadImages } from './pixabay-api.js';
-import { renderImages, clearImages } from './render-functions.js';
+import { renderImages, clearLayout, renderLoader } from './render-functions.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
@@ -31,10 +31,13 @@ const lighboxInstance = new SimpleLightbox('.gallery a', {
 });
 
 function startLoadingImages(searchQuery) {
-  clearImages(galleryList);
+  clearLayout(galleryList);
+  renderLoader(galleryList);
 
   loadImages(searchQuery)
     .then(images => {
+      clearLayout(galleryList);
+
       if (images.length === 0) {
         showErrorMessage(
           'Sorry, there are no images matching your search query. Please try again!'
@@ -42,11 +45,11 @@ function startLoadingImages(searchQuery) {
         return;
       }
 
-      console.log(images);
       renderImages(galleryList, images);
       lighboxInstance.refresh();
     })
     .catch(error => {
+      clearLayout(galleryList);
       showErrorMessage(error);
     });
 }

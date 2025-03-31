@@ -1,5 +1,9 @@
-export function clearImages(galleryList) {
+export function clearLayout(galleryList) {
   galleryList.innerHTML = '';
+}
+
+export function renderLoader(galleryList) {
+  galleryList.innerHTML = `<span class="loader"></span>`;
 }
 
 export function renderImages(galleryList, images) {
